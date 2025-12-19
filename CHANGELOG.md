@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.3.0] - 2025-12-19
+
+### Added
+- **Download Feature**: A new button to download the rendered content as a `.md` file.
+
+### Changed
+- **Error Handling**: The error message overlay can now be closed by pressing `Esc` or clicking outside the message box.
+- **Footer Links**: Reverted "README" and "CHANGELOG" links to open in a new tab (`target="_blank"`) instead of a modal for better standard browser behavior.
+
 ## [1.2.0] - 2025-12-19
 
 ### Added
