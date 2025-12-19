@@ -366,6 +366,12 @@ footer {
     z-index: 100;
 }
 
+footer p {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
 footer a {
     color: var(--text-secondary);
     text-decoration: none;
@@ -374,6 +380,7 @@ footer a {
 
 footer a:hover {
     color: var(--text-primary);
+    text-decoration: underline;
 }
 
 @media (max-width: 768px) {
