@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.3.1] - 2025-12-20
+
+### Added
+- **Dynamic Title**: The application title now dynamically displays `Markdown Viewer - {Filename}`, with a clickable "reset" action on the main title.
+- **Hits Badge**: Added a view counter badge to the footer (powered by hits.sh).
+
+### Changed
+- **Header Actions**: Reordered buttons for better usability: `Copy` -> `Download` -> `View Original` -> `Theme Toggle`.
+- **Download Behavior**: Downloaded files now retain their original filename if an extension exists (e.g., `README.md` stays `README.md`).
+- **Footer Layout**: Reorganized footer elements to: Version | README | CHANGELOG | Copyright | Hits Badge.
+- **Title Styling**: Improved CSS isolation to ensure filenames do not inherit the gradient style of the logo.
+
 ## [1.3.0] - 2025-12-19
 
 ### Added

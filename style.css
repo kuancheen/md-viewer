@@ -112,8 +112,9 @@ h1.app-title {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    /* Match parent h1 style */
+    /* Match parent h1 style and reset gradient */
     color: var(--text-primary);
+    -webkit-text-fill-color: var(--text-primary);
     font-weight: 600;
 }
 
