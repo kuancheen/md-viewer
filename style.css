@@ -106,14 +106,15 @@ h1.app-title {
 }
 
 #file-name-display {
-    color: var(--text-secondary);
-    font-weight: 400;
     border-left: 1px solid var(--border-color);
     padding-left: 0.75rem;
     margin-left: 0.25rem;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    /* Match parent h1 style */
+    color: var(--text-primary);
+    font-weight: 600;
 }
 
 .actions {
