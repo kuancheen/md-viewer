@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.2.0] - 2025-12-19
+
+### Added
+- **Local File Upload**: Support for viewing `.md` and `.txt` files directly via drag & drop or file selection.
+- **Documentation Modal**: Footer links (README/CHANGELOG) now open in a centered glassmorphism modal iframe.
+- **Visibility Logic**: Action buttons (Copy/View Original) are now hidden when no file is loaded.
+
+### Fixed
+- CSS bug where hidden buttons were still consuming layout space.
+- Footer external links now correctly open in a new window (`target="_blank"`).
+
+## [1.1.0] - 2025-12-19
+
+### Added
+- **Theme Toggle**: Support for Dark and Light modes with persistent `localStorage` preference.
+- **Sticky Layout**: Fixed header and footer with a scrollable main content area.
+- **Improved Buttons**: Converted "View Original" link to a button.
+- **Footer Links**: Added version info and repository documentation links to the footer.
+- **Query Decoding**: Improved URL parsing for compatibility with nested viewer links.
+
 ## [1.0.0] - 2025-12-19
 
 ### Added
