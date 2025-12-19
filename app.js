@@ -13,6 +13,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const dropZone = document.getElementById('drop-zone');
     const fileInput = document.getElementById('file-input');
 
+    // Modal Elements
+    const docModal = document.getElementById('doc-modal');
+    const modalFrame = document.getElementById('modal-frame');
+    const modalClose = document.getElementById('modal-close');
+    const modalTitle = document.getElementById('modal-title');
+
     // Theme Management
     const getSystemTheme = () => window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
     const currentTheme = localStorage.getItem('theme') || getSystemTheme();
@@ -38,10 +44,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const showState = (state) => {
         [loading, landingPage, errorMessage, markdownBody].forEach(el => el.classList.add('hidden'));
+
+        // Hide action buttons when not in content state
+        if (state !== 'content') {
+            copyBtn.classList.add('hidden-action');
+            rawBtn.classList.add('hidden-action');
+        }
+
         if (state === 'loading') loading.classList.remove('hidden');
         else if (state === 'landing') landingPage.classList.remove('hidden');
         else if (state === 'error') errorMessage.classList.remove('hidden');
-        else if (state === 'content') markdownBody.classList.remove('hidden');
+        else if (state === 'content') {
+            markdownBody.classList.remove('hidden');
+            copyBtn.classList.remove('hidden-action');
+            // rawBtn visibility is handled by renderMarkdown based on originalUrl
+        }
     };
 
     const convertToRawUrl = (url) => {
@@ -73,10 +90,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Actions
         if (originalUrl) {
-            rawBtn.classList.remove('hidden');
+            rawBtn.classList.remove('hidden-action');
             rawBtn.onclick = () => window.open(originalUrl, '_blank', 'noopener,noreferrer');
         } else {
-            rawBtn.classList.add('hidden');
+            rawBtn.classList.add('hidden-action');
         }
 
         copyBtn.onclick = () => {
@@ -155,6 +172,35 @@ document.addEventListener('DOMContentLoaded', () => {
         const dt = e.dataTransfer;
         handleFile(dt.files[0]);
     }, false);
+
+    // Modal Logic
+    const openModal = (url, title) => {
+        modalTitle.textContent = title;
+        modalFrame.src = url;
+        docModal.classList.add('active');
+        document.body.style.overflow = 'hidden'; // Prevent background scroll
+    };
+
+    const closeModal = () => {
+        docModal.classList.remove('active');
+        setTimeout(() => {
+            modalFrame.src = 'about:blank';
+        }, 300);
+        document.body.style.overflow = '';
+    };
+
+    modalClose.addEventListener('click', closeModal);
+    docModal.addEventListener('click', (e) => {
+        if (e.target === docModal) closeModal();
+    });
+
+    // Handle Documentation Links
+    document.querySelectorAll('.doc-link').forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            openModal(link.href, link.textContent);
+        });
+    });
 
     // Initialize from URL query string
     const query = window.location.search.substring(1);
