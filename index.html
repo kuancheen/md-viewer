@@ -10,10 +10,10 @@
     -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GitHub Markdown Viewer [v1.0.0]</title>
+    <title>GitHub Markdown Viewer [v1.1.0]</title>
     <link rel="icon"
         href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📄</text></svg>">
-    <link rel="stylesheet" href="style.css?v=1.0.0">
+    <link rel="stylesheet" href="style.css?v=1.1.0">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -33,40 +33,43 @@
             <div class="header-content">
                 <h1 id="file-title">Markdown Viewer</h1>
                 <div class="actions">
+                    <button id="theme-toggle" title="Toggle Dark/Light Mode">🌓</button>
                     <button id="copy-btn" title="Copy Markdown Content">Copy Content</button>
-                    <a id="raw-link" target="_blank" rel="noopener noreferrer">View Original</a>
+                    <button id="raw-btn" title="View Original Content">View Original</button>
                 </div>
             </div>
         </header>
 
         <main id="content-area">
-            <div id="loading" class="hidden">
-                <div class="spinner"></div>
-                <p>Fetching content...</p>
-            </div>
+            <div class="content-container">
+                <div id="loading" class="hidden">
+                    <div class="spinner"></div>
+                    <p>Fetching content...</p>
+                </div>
 
-            <div id="landing-page" class="hidden">
-                <div class="landing-content">
-                    <h2>View any GitHub Markdown file</h2>
-                    <p>Paste a GitHub link below to view it beautifully rendered.</p>
-                    <div class="input-group">
-                        <input type="text" id="github-url-input"
-                            placeholder="https://github.com/user/repo/blob/main/README.md">
-                        <button id="go-btn">View File</button>
+                <div id="landing-page" class="hidden">
+                    <div class="landing-content">
+                        <h2>View any GitHub Markdown file</h2>
+                        <p>Paste a GitHub link below to view it beautifully rendered.</p>
+                        <div class="input-group">
+                            <input type="text" id="github-url-input"
+                                placeholder="https://github.com/user/repo/blob/main/README.md">
+                            <button id="go-btn" class="btn">View File</button>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div id="error-message" class="hidden">
-                <div class="error-content">
-                    <span class="error-icon">⚠️</span>
-                    <h2 id="error-title">Oops!</h2>
-                    <p id="error-text">Something went wrong.</p>
-                    <button onclick="window.location.search = ''">Go Home</button>
+                <div id="error-message" class="hidden">
+                    <div class="error-content">
+                        <span class="error-icon">⚠️</span>
+                        <h2 id="error-title">Oops!</h2>
+                        <p id="error-text">Something went wrong.</p>
+                        <button onclick="window.location.search = ''">Go Home</button>
+                    </div>
                 </div>
-            </div>
 
-            <div id="markdown-body" class="markdown-body hidden"></div>
+                <div id="markdown-body" class="markdown-body hidden"></div>
+            </div>
         </main>
 
         <footer>
@@ -74,7 +77,7 @@
         </footer>
     </div>
 
-    <script src="app.js?v=1.0.0"></script>
+    <script src="app.js?v=1.1.0"></script>
 </body>
 
 </html>

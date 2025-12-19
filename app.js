@@ -6,15 +6,27 @@ document.addEventListener('DOMContentLoaded', () => {
     const errorText = document.getElementById('error-text');
     const fileTitle = document.getElementById('file-title');
     const copyBtn = document.getElementById('copy-btn');
-    const rawLink = document.getElementById('raw-link');
+    const rawBtn = document.getElementById('raw-btn');
     const githubUrlInput = document.getElementById('github-url-input');
     const goBtn = document.getElementById('go-btn');
+    const themeToggle = document.getElementById('theme-toggle');
+
+    // Theme Management
+    const getSystemTheme = () => window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+    const currentTheme = localStorage.getItem('theme') || getSystemTheme();
+    document.documentElement.setAttribute('data-theme', currentTheme);
+
+    themeToggle.addEventListener('click', () => {
+        const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', theme);
+        localStorage.setItem('theme', theme);
+    });
 
     // Configure Marked.js
     marked.setOptions({
         gfm: true,
         breaks: true,
-        highlight: function(code, lang) {
+        highlight: function (code, lang) {
             if (Prism.languages[lang]) {
                 return Prism.highlight(code, Prism.languages[lang], lang);
             }
@@ -48,14 +60,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const fetchAndRender = async (url) => {
         showState('loading');
         const rawUrl = convertToRawUrl(url);
-        rawLink.href = url;
+
+        rawBtn.onclick = () => window.open(url, '_blank', 'noopener,noreferrer');
 
         try {
             const response = await fetch(rawUrl);
             if (!response.ok) throw new Error(`Failed to fetch: ${response.statusText}`);
-            
+
             const markdownContent = await response.text();
-            
+
             // Set Title from URL
             const fileName = url.split('/').pop();
             fileTitle.textContent = fileName || 'Markdown Viewer';
@@ -63,7 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Render Markdown
             markdownBody.innerHTML = marked.parse(markdownContent);
-            
+
             // Apply Prism highlighting
             Prism.highlightAll();
 
@@ -90,7 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Find the absolute URL in the query string
         const urlMatch = query.match(/https?:\/\/[^\s]+/);
         if (urlMatch) {
-            fetchAndRender(urlMatch[0]);
+            fetchAndRender(decodeURIComponent(urlMatch[0]));
         } else {
             showState('landing');
         }
