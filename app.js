@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const landingPage = document.getElementById('landing-page');
     const errorMessage = document.getElementById('error-message');
     const errorText = document.getElementById('error-text');
-    const fileTitle = document.getElementById('file-title');
+    const fileNameDisplay = document.getElementById('file-name-display');
     const copyBtn = document.getElementById('copy-btn');
     const rawBtn = document.getElementById('raw-btn');
     const githubUrlInput = document.getElementById('github-url-input');
@@ -47,11 +47,18 @@ document.addEventListener('DOMContentLoaded', () => {
             rawBtn.classList.add('hidden-action');
         }
 
-        if (state === 'loading') loading.classList.remove('hidden');
-        else if (state === 'landing') landingPage.classList.remove('hidden');
-        else if (state === 'error') errorMessage.classList.remove('hidden');
-        else if (state === 'content') {
+        if (state === 'loading') {
+            loading.classList.remove('hidden');
+            fileNameDisplay.classList.add('hidden'); // Hide filename during loading/reset
+        } else if (state === 'landing') {
+            landingPage.classList.remove('hidden');
+            fileNameDisplay.classList.add('hidden');
+        } else if (state === 'error') {
+            errorMessage.classList.remove('hidden');
+            fileNameDisplay.classList.add('hidden');
+        } else if (state === 'content') {
             markdownBody.classList.remove('hidden');
+            fileNameDisplay.classList.remove('hidden');
             copyBtn.classList.remove('hidden-action');
             downloadBtn.classList.remove('hidden-action');
             // rawBtn visibility is handled by renderMarkdown based on originalUrl
@@ -85,8 +92,13 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const renderMarkdown = (content, title, originalUrl = null) => {
-        fileTitle.textContent = title || 'Markdown Viewer';
-        document.title = `${title} - Markdown Viewer`;
+        if (title) {
+            fileNameDisplay.textContent = title;
+            document.title = `${title} - Markdown Viewer`;
+        } else {
+            fileNameDisplay.textContent = '';
+            document.title = 'Markdown Viewer';
+        }
 
         // Render Markdown
         markdownBody.innerHTML = marked.parse(content);

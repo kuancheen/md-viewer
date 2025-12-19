@@ -31,11 +31,14 @@
     <div id="app">
         <header>
             <div class="header-content">
-                <h1 id="file-title">Markdown Viewer</h1>
+                <h1 class="app-title">
+                    <a href="." title="Reset">📄 Markdown <span>Viewer</span></a>
+                    <span id="file-name-display" class="hidden"></span>
+                </h1>
                 <div class="actions">
-                    <button id="theme-toggle" title="Toggle Dark/Light Mode">🌓</button>
                     <button id="copy-btn" class="hidden-action" title="Copy Markdown Content">Copy Content</button>
                     <button id="download-btn" class="hidden-action" title="Download Markdown File">Download</button>
+                    <button id="theme-toggle" title="Toggle Dark/Light Mode">🌓</button>
                     <button id="raw-btn" class="hidden-action" title="View Original Content">View Original</button>
                 </div>
             </div>
