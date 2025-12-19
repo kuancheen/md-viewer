@@ -97,7 +97,7 @@ h1.app-title {
     opacity: 0.8;
 }
 
-.app-title span {
+.app-title a span {
     background: linear-gradient(135deg, var(--accent-color), #ec4899);
     -webkit-background-clip: text;
     background-clip: text;
