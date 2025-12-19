@@ -12,12 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const themeToggle = document.getElementById('theme-toggle');
     const dropZone = document.getElementById('drop-zone');
     const fileInput = document.getElementById('file-input');
-
-    // Modal Elements
-    const docModal = document.getElementById('doc-modal');
-    const modalFrame = document.getElementById('modal-frame');
-    const modalClose = document.getElementById('modal-close');
-    const modalTitle = document.getElementById('modal-title');
+    const downloadBtn = document.getElementById('download-btn');
 
     // Theme Management
     const getSystemTheme = () => window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
@@ -48,6 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Hide action buttons when not in content state
         if (state !== 'content') {
             copyBtn.classList.add('hidden-action');
+            downloadBtn.classList.add('hidden-action');
             rawBtn.classList.add('hidden-action');
         }
 
@@ -57,9 +53,21 @@ document.addEventListener('DOMContentLoaded', () => {
         else if (state === 'content') {
             markdownBody.classList.remove('hidden');
             copyBtn.classList.remove('hidden-action');
+            downloadBtn.classList.remove('hidden-action');
             // rawBtn visibility is handled by renderMarkdown based on originalUrl
         }
     };
+
+    // Close Error Overlay logic
+    const closeError = () => errorMessage.classList.add('hidden');
+    errorMessage.addEventListener('click', (e) => {
+        if (e.target === errorMessage) closeError();
+    });
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && !errorMessage.classList.contains('hidden')) {
+            closeError();
+        }
+    });
 
     const convertToRawUrl = (url) => {
         try {
@@ -102,6 +110,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 copyBtn.textContent = 'Copied!';
                 setTimeout(() => copyBtn.textContent = originalText, 2000);
             });
+        };
+
+        downloadBtn.onclick = () => {
+            const blob = new Blob([content], { type: 'text/markdown' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = title.endsWith('.md') ? title : `${title}.md`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
         };
     };
 
@@ -173,34 +193,6 @@ document.addEventListener('DOMContentLoaded', () => {
         handleFile(dt.files[0]);
     }, false);
 
-    // Modal Logic
-    const openModal = (url, title) => {
-        modalTitle.textContent = title;
-        modalFrame.src = url;
-        docModal.classList.add('active');
-        document.body.style.overflow = 'hidden'; // Prevent background scroll
-    };
-
-    const closeModal = () => {
-        docModal.classList.remove('active');
-        setTimeout(() => {
-            modalFrame.src = 'about:blank';
-        }, 300);
-        document.body.style.overflow = '';
-    };
-
-    modalClose.addEventListener('click', closeModal);
-    docModal.addEventListener('click', (e) => {
-        if (e.target === docModal) closeModal();
-    });
-
-    // Handle Documentation Links
-    document.querySelectorAll('.doc-link').forEach(link => {
-        link.addEventListener('click', (e) => {
-            e.preventDefault();
-            openModal(link.href, link.textContent);
-        });
-    });
 
     // Initialize from URL query string
     const query = window.location.search.substring(1);

@@ -35,6 +35,7 @@
                 <div class="actions">
                     <button id="theme-toggle" title="Toggle Dark/Light Mode">🌓</button>
                     <button id="copy-btn" class="hidden-action" title="Copy Markdown Content">Copy Content</button>
+                    <button id="download-btn" class="hidden-action" title="Download Markdown File">Download</button>
                     <button id="raw-btn" class="hidden-action" title="View Original Content">View Original</button>
                 </div>
             </div>
@@ -88,26 +89,14 @@
         <footer>
             <p>
                 v1.2.0 |
-                <a href="?https://github.com/kuancheen/md-viewer/blob/main/README.md" class="doc-link">README</a> |
-                <a href="?https://github.com/kuancheen/md-viewer/blob/main/CHANGELOG.md" class="doc-link">CHANGELOG</a>
-                |
+                <a href="?https://github.com/kuancheen/md-viewer/blob/main/README.md" target="_blank"
+                    rel="noopener noreferrer">README</a> |
+                <a href="?https://github.com/kuancheen/md-viewer/blob/main/CHANGELOG.md" target="_blank"
+                    rel="noopener noreferrer">CHANGELOG</a> |
                 Made with ❤️ by <a href="https://github.com/kuancheen" target="_blank"
                     rel="noopener noreferrer">kuancheen</a>
             </p>
         </footer>
-
-        <!-- Modal for Documentation -->
-        <div id="doc-modal" class="modal-overlay">
-            <div class="modal-container">
-                <div class="modal-header">
-                    <div class="modal-title" id="modal-title">Documentation</div>
-                    <button class="modal-close" id="modal-close" title="Close">&times;</button>
-                </div>
-                <div class="modal-body">
-                    <iframe id="modal-frame" src="about:blank"></iframe>
-                </div>
-            </div>
-        </div>
     </div>
 
     <script src="app.js?v=1.2.0"></script>
