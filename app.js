@@ -10,6 +10,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const githubUrlInput = document.getElementById('github-url-input');
     const goBtn = document.getElementById('go-btn');
     const themeToggle = document.getElementById('theme-toggle');
+    const dropZone = document.getElementById('drop-zone');
+    const fileInput = document.getElementById('file-input');
 
     // Theme Management
     const getSystemTheme = () => window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
@@ -57,45 +59,102 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    const renderMarkdown = (content, title, originalUrl = null) => {
+        fileTitle.textContent = title || 'Markdown Viewer';
+        document.title = `${title} - Markdown Viewer`;
+
+        // Render Markdown
+        markdownBody.innerHTML = marked.parse(content);
+
+        // Apply Prism highlighting
+        Prism.highlightAll();
+
+        showState('content');
+
+        // Actions
+        if (originalUrl) {
+            rawBtn.classList.remove('hidden');
+            rawBtn.onclick = () => window.open(originalUrl, '_blank', 'noopener,noreferrer');
+        } else {
+            rawBtn.classList.add('hidden');
+        }
+
+        copyBtn.onclick = () => {
+            navigator.clipboard.writeText(content).then(() => {
+                const originalText = copyBtn.textContent;
+                copyBtn.textContent = 'Copied!';
+                setTimeout(() => copyBtn.textContent = originalText, 2000);
+            });
+        };
+    };
+
     const fetchAndRender = async (url) => {
         showState('loading');
         const rawUrl = convertToRawUrl(url);
-
-        rawBtn.onclick = () => window.open(url, '_blank', 'noopener,noreferrer');
 
         try {
             const response = await fetch(rawUrl);
             if (!response.ok) throw new Error(`Failed to fetch: ${response.statusText}`);
 
             const markdownContent = await response.text();
-
-            // Set Title from URL
             const fileName = url.split('/').pop();
-            fileTitle.textContent = fileName || 'Markdown Viewer';
-            document.title = `${fileName} - Markdown Viewer`;
-
-            // Render Markdown
-            markdownBody.innerHTML = marked.parse(markdownContent);
-
-            // Apply Prism highlighting
-            Prism.highlightAll();
-
-            showState('content');
-
-            // Copy content functionality
-            copyBtn.onclick = () => {
-                navigator.clipboard.writeText(markdownContent).then(() => {
-                    const originalText = copyBtn.textContent;
-                    copyBtn.textContent = 'Copied!';
-                    setTimeout(() => copyBtn.textContent = originalText, 2000);
-                });
-            };
+            renderMarkdown(markdownContent, fileName, url);
 
         } catch (error) {
             errorText.textContent = error.message;
             showState('error');
         }
     };
+
+    const handleFile = (file) => {
+        if (!file) return;
+        // Accept .md, .txt or files that look like markdown
+        if (!file.name.endsWith('.md') && !file.name.endsWith('.txt') && !file.type.includes('markdown') && !file.type.includes('text/plain')) {
+            errorText.textContent = "Please upload a .md or .txt file.";
+            showState('error');
+            return;
+        }
+
+        showState('loading');
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const content = e.target.result;
+            renderMarkdown(content, file.name);
+        };
+        reader.onerror = () => {
+            errorText.textContent = "Error reading file.";
+            showState('error');
+        };
+        reader.readAsText(file);
+    };
+
+    // File Selection Handlers
+    dropZone.addEventListener('click', () => fileInput.click());
+
+    fileInput.addEventListener('change', (e) => {
+        handleFile(e.target.files[0]);
+    });
+
+    // Drag and Drop Logic
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+        dropZone.addEventListener(eventName, (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+        }, false);
+    });
+
+    ['dragenter', 'dragover'].forEach(eventName => {
+        dropZone.addEventListener(eventName, () => dropZone.classList.add('dragover'), false);
+    });
+
+    ['dragleave', 'drop'].forEach(eventName => {
+        dropZone.addEventListener(eventName, () => dropZone.classList.remove('dragover'), false);
+    });
+
+    dropZone.addEventListener('drop', (e) => {
+        const dt = e.dataTransfer;
+        handleFile(dt.files[0]);
+    }, false);
 
     // Initialize from URL query string
     const query = window.location.search.substring(1);
