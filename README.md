@@ -10,15 +10,22 @@ A simple, premium web application to view GitHub Markdown files by providing the
 
 ## Usage
 
+### Remote Files
 Append the GitHub file URL to the base URL:
 `https://kuancheen.github.io/md-viewer/?https://github.com/user/repo/blob/main/README.md`
 
+### Local Files
+Simply visit the [Landing Page](https://kuancheen.github.io/md-viewer/) and drag & drop any `.md` or `.txt` file into the upload zone.
+
 ## Features
 
-- **Automatic URL Conversion**: Converts standard GitHub URLs to raw content URLs.
-- **Premium UI**: Clean, modern, and responsive design.
-- **Syntax Highlighting**: Beautiful code blocks.
-- **GFM Support**: Supports GitHub Flavored Markdown features like tables and task lists.
+- **Local File Upload**: View local `.md` and `.txt` files directly via drag & drop.
+- **Theme Support**: Seamlessly toggle between Dark and Light modes.
+- **Automatic URL Conversion**: Converts standard GitHub URLs to raw content URLs for rendering.
+- **Premium UI**: Modern, glassmorphism-inspired design with a sticky header and footer.
+- **Documentation Modal**: View repository README and CHANGELOG in a centered modal window.
+- **Syntax Highlighting**: Beautifully formatted code blocks.
+- **GFM Support**: Full support for GitHub Flavored Markdown (tables, task lists, etc.).
 
 ## Technologies
 
