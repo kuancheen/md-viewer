@@ -117,7 +117,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = title.endsWith('.md') ? title : `${title}.md`;
+            // Use title as filename; only append .md if no extension is present
+            a.download = title.includes('.') ? title : `${title}.md`;
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
